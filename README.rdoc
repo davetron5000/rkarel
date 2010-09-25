@@ -1,6 +1,6 @@
 = Karel the Robot in Ruby
 
-This is a ruby implementation of <a href="http://www.cs.mtsu.edu/~untch/karel/">Karel The Robot</a>, a 
+This is a ruby implementation of Karel The Robot[http://www.cs.mtsu.edu/~untch/karel/], a 
 programming language designed for extreme beginners.   It concerns controlling
 a robot, named Karel, in a grid-based world comprised of walls and beepers.  Karel can pick up and put down beepers, move
 forward, and turn left.  Karel can also detect things about his environment.
