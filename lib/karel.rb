@@ -1,4 +1,10 @@
 module Karel
+  def WORLD(x)
+    THE_WORLD
+  end
+  def IS(string)
+    THE_WORLD.IS(string)
+  end
   class World
     attr_reader :karel
     def IS(definition)
@@ -102,5 +108,5 @@ module Karel
 
   EMPTY_SQUARE = Square.new(false)
 
-  WORLD = World.new
+  THE_WORLD = World.new
 end
