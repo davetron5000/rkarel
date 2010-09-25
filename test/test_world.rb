@@ -5,7 +5,7 @@ class TestWorld < Test::Unit::TestCase
   include Karel
 
   def test_valid_world
-    WORLD IS <<END
+    WORLD <<END
 KWB
 
  B

@@ -1,8 +1,5 @@
 module Karel
-  def WORLD(x)
-    THE_WORLD
-  end
-  def IS(string)
+  def WORLD(string)
     THE_WORLD.IS(string)
   end
   class World
