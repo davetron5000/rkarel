@@ -12,7 +12,7 @@ The language
 While the karel language doesn't have any concept of the world, you must still define one in which your program will run.  This is done
 at the top of the program via:
 
-    world <<END
+    WORLD <<END
        W    B
        W   
        WWW
@@ -46,14 +46,14 @@ Once you've defined your subroutines, you can begin writing your program:
       ITERATE 3 TIMES {
         MOVE
       }
-      IF front_is_clear {
+      IF front_clear {
         MOVE
       }
       ELSE {
         PUTBEEPER
       }
-      turnleft
-      WHILE not_next_to_beeper {
+      TURNLEFT
+      WHILE not_on_beeper {
         MOVE
       }
       PICKBEEPER
@@ -91,6 +91,10 @@ Once you've defined your subroutines, you can begin writing your program:
 [+not_facing_east+] true if Karel is not facing east
 [+facing_west+] true if Karel is facing west
 [+not_facing_west+] true if Karel is not facing west
+
+= Vim Syntax File =
+
+In <code>contrib</code> is a vim syntax file for karel source as described here.
 
 = Command Line Interface =
 :include:karel.rdoc
