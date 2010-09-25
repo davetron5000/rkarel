@@ -1,0 +1,97 @@
+= Karel the Robot in Ruby
+
+This is a ruby implementation of <a href="http://www.cs.mtsu.edu/~untch/karel/">Karel The Robot</a>, a 
+programming language designed for extreme beginners.   It concerns controlling
+a robot, named Karel, in a grid-based world comprised of walls and beepers.  Karel can pick up and put down beepers, move
+forward, and turn left.  Karel can also detect things about his environment.
+
+The language
+
+= Usage
+
+While the karel language doesn't have any concept of the world, you must still define one in which your program will run.  This is done
+at the top of the program via:
+
+    world <<END
+       W    B
+       W   
+       WWW
+       B
+    K
+    END
+
+This defines Karel's world to be 5x9 with walls represented by W's, a beeper represented by B's, and Karel's
+initial location represented as a "K".  Karel is assumed to be facing north at the start of all programs.
+
+You then can define subroutines as such:
+
+    DEFINE 'TURNRIGHT' {
+      TURNLEFT
+      TURNLEFT
+      TURNLEFT
+    }
+
+You can then call this subroutine as you would any other
+
+    MOVE
+    TURNRIGHT
+    MOVE
+    MOVE
+
+Once you've defined your subroutines, you can begin writing your program:
+
+    PROGRAM {
+      MOVE
+      TURNLEFT
+      ITERATE 3 TIMES {
+        MOVE
+      }
+      IF front_is_clear {
+        MOVE
+      }
+      ELSE {
+        PUTBEEPER
+      }
+      turnleft
+      WHILE not_next_to_beeper {
+        MOVE
+      }
+      PICKBEEPER
+    }
+
+== Commands
+
+[+MOVE+] Move Karel forward one square.  If Karel can't, he explodes and the program aborts
+[+TURNLEFT+] Rotate Karel, in place, to the left
+[+PICKBEEPER+] Pick up the beeper at Karel's position.  If there is no beeper, Karel explodes and the problem aborts
+[+PUTBEEPER+] Put down a beeper at Karel's position.  If there is a beeper or if Karel has no beepers, Karel explodes and the problem aborts
+
+== Control Flow
+
+[+IF+] takes a condition and a curly-braced block to perform if the condition holds
+[+ELSE+] when after an IF, executes the curly-braced block if the condition didn't hold
+[+ITERATE+ N +TIMES+] perform something a constant number of times
+[+WHILE+] takes a condition and a curly-braced block and repeatedly performs the block's statements until the condition holds
+
+=== Conditions
+
+[+on_beeper+] true if Karel is on the same square as a beeper
+[+not_on_beeper+] true if Karel is not on the same square as a beeper
+[+front_clear+] true if the square in front of Karel is clear
+[+front_not_clear+] true if the square in front of Karel is not clear
+[+left_clear+] true if the square to the left of Karel is clear
+[+left_not_clear+] true if the square to the left of Karel is not clear
+[+right_clear+] true if the square to the left of Karel is clear
+[+right_not_clear+] true if the square to the left of Karel is not clear
+[+facing_north+] true if Karel is facing north
+[+not_facing_north+] true if Karel is not facing north
+[+facing_south+] true if Karel is facing south
+[+not_facing_south+] true if Karel is not facing south
+[+facing_east+] true if Karel is facing east
+[+not_facing_east+] true if Karel is not facing east
+[+facing_west+] true if Karel is facing west
+[+not_facing_west+] true if Karel is not facing west
+
+= Command Line Interface =
+:include:karel.rdoc
+

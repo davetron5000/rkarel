@@ -1,0 +1,38 @@
+= <tt>karel</tt>
+
+    karel command_name [command-specific options] [--] arguments...
+
+* Use the command +help+ to get a summary of commands
+* Use the command <tt>help command_name</tt> to get a help for +command_name+
+* Use <tt>--</tt> to stop command line argument processing; useful if your arguments have dashes in them
+
+== Commands
+[<tt>check</tt>] Checks that a Karel program appears valid
+[<tt>help</tt>] Shows list of commands or help for one command
+[<tt>init</tt>] Creates a new Karel program with appropriate boilerplate
+[<tt>run</tt>] Executes a Karel program
+
+=== <tt>check source_file</tt>
+
+Checks that a Karel program appears valid
+
+=== <tt>help [command]</tt>
+
+Shows list of commands or help for one command
+
+=== <tt>init source_file</tt>
+
+Creates a new Karel program with appropriate boilerplate
+
+=== <tt>run source_file</tt>
+
+Executes a Karel program
+
+
+
+==== Options
+These options are specified *after* the command.
+
+[<tt>-g, --debug</tt>] Show the world after each command is executed
+[<tt>-s</tt>] Run silently; do not show the world before or after
+[<tt>-x arg</tt>] Number of "ticks" to allow before assuming we are in an infinite loop <i>( default: <tt>1000</tt>)</i>

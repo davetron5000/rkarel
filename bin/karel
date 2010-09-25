@@ -1,0 +1,54 @@
+#!/usr/bin/ruby
+$: << File.expand_path(File.dirname(__FILE__) + '/../lib')
+require 'rubygems'
+require 'gli'
+
+include GLI
+
+desc 'Executes a Karel program'
+arg_name 'source_file'
+command :run do |c|
+
+  c.desc 'Run silently; do not show the world before or after'
+  c.long_desc 'This will execute the karel source file, exiting with 0 if the program ran without incident.  An exit code of -1 means that Karel exploded, and -2 means that a potential infinite loop was encountered'
+  c.switch :s
+
+  c.desc 'Number of "ticks" to allow before assuming we are in an infinite loop'
+  c.long_desc 'To keep this implementation simple, we will count the number of times we execute a Karel command.  If this number exceeds the number here, we will assume a non-terminating program and exit'
+  c.default_value '1000'
+  c.flag [:x]
+
+  c.desc 'Show the world after each command is executed'
+  c.switch [:g,:debug]
+
+  c.action do |global_options,options,args|
+  end
+
+end
+
+desc 'Checks that a Karel program appears valid'
+arg_name 'source_file'
+command :check do |c|
+  c.action do |global_options,options,args|
+  end
+end
+
+desc 'Creates a new Karel program with appropriate boilerplate'
+arg_name 'source_file'
+command :init do |c|
+  c.action do |global_options,options,args|
+  end
+end
+
+pre do |global,command,options,args|
+  true
+end
+
+post do |global,command,options,args|
+end
+
+on_error do |exception|
+  true
+end
+
+GLI.run(ARGV)
