@@ -2,12 +2,12 @@ require 'rake/clean'
 require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
-require 'cucumber'
-require 'cucumber/rake/task'
+require 'rake/testtask'
 
-Cucumber::Rake::Task.new(:features) do |task|
-  task.cucumber_opts = "features"
-  task.cucumber_opts << "--format pretty"
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.test_files = FileList['test/test*.rb']
+  t.verbose = true
 end
 
 Rake::RDocTask.new do |rd|
