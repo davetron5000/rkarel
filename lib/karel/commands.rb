@@ -6,10 +6,10 @@ module Karel
     def WORLD(string)
       @subroutines ||= {}
       world_instance.create_from_string(string,karel_instance)
-      #unless @silent
-      #  puts "Initial State"
-      #  puts THE_WORLD.to_s
-      #end
+      unless @silent
+        puts "Initial State"
+        puts THE_WORLD.to_s
+      end
     end
 
     def karel_instance; KAREL; end

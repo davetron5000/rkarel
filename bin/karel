@@ -38,17 +38,59 @@ command :run do |c|
 
 end
 
-desc 'Checks that a Karel program appears valid'
-arg_name 'source_file'
-command :check do |c|
-  c.action do |global_options,options,args|
-  end
-end
-
-desc 'Creates a new Karel program with appropriate boilerplate'
+desc 'Creates a new example Karel program'
 arg_name 'source_file'
 command :init do |c|
+  c.desc 'Overwite files'
+  c.switch [:f,:force]
+
   c.action do |global_options,options,args|
+    raise "You must provide a karel source file" if args.empty?
+    not_overwritten = []
+    args.each do |filename|
+      if File.exists?(filename) && !options[:f]
+        not_overwritten << filename 
+      else
+        File.open(filename,'w') do |file|
+          file.puts <<EOF
+# A 10x10 world
+WORLD <<END
+B   WW  WB
+    W
+    W
+    W
+    WB
+  WWWW
+        WW
+         W
+ B
+K
+END
+
+# Create a subroutine
+DEFINE('MOVE_TWICE') {
+  MOVE()
+  MOVE()
+}
+
+MOVE()
+TURNLEFT()
+TURNLEFT()
+TURNLEFT()
+MOVE()
+PICKBEEPER()
+MOVE_TWICE()
+PUTBEEPER()
+WHILE(front_clear) {
+  MOVE()
+}
+EOF
+        end
+      end
+    end
+    not_overwritten.each do |filename|
+      puts "Not overwriting #{filename}; file exists"
+    end
   end
 end
 
