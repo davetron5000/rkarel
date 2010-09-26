@@ -33,12 +33,7 @@ module Karel
         column = 0
         row += 1
       end
-      @height.times do |row|
-        @world[row] = [] if @world[row].nil?
-        @width.times do |column|
-          @world[row][column] = Square.new if @world[row][column].nil?
-        end
-      end
+      fill_in_empty_spaces
     end
 
     # Set the location of Karel
@@ -89,6 +84,15 @@ module Karel
         end
       else
         Square.new
+      end
+    end
+
+    def fill_in_empty_spaces
+      @height.times do |row|
+        @world[row] = [] if @world[row].nil?
+        @width.times do |column|
+          @world[row][column] = Square.new if @world[row][column].nil?
+        end
       end
     end
   end
