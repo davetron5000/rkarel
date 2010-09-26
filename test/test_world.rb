@@ -24,9 +24,6 @@ END
     assert_equal 0,x
     assert_equal 2,y
     assert THE_WORLD[0,2].beeper?
-    assert_raises Explosion do
-      THE_WORLD.karel = [0,1]
-    end
   end
 
   def test_world_with_bad_character
@@ -40,7 +37,7 @@ END
   end
 
   def test_world_with_no_karel
-    assert_raises NoKarel do
+    assert_raises InvalidWorld do
     WORLD <<END
  WB 
 
@@ -76,6 +73,9 @@ END
     assert_raises NoBeeper do
       THE_WORLD.remove_beeper(3,0) 
     end
-  end
 
+    assert_raises Explosion do
+      THE_WORLD.karel = [0,1]
+    end
+  end
 end

@@ -34,14 +34,20 @@ module Karel
         column = 0
         row += 1
       end
-      raise NoKarel unless @karel
+      raise InvalidWorld,"There is no Karel in this World" unless @karel
       fill_in_empty_spaces
     end
 
+    # Removes a beeper from the world at the given row/column
+    #
+    # raises a NoBeeper exception if there is no beeper at those coordinates.  
     def remove_beeper(row,column)
       self[row,column].pick_beeper
     end
 
+    # Adds a beeper tot he world at the given row/column
+    #
+    # raises a SquareOccupied exception if there is a beeper or wall at those coordinates.  
     def add_beeper(row,column)
       self[row,column].put_beeper
     end
@@ -57,6 +63,8 @@ module Karel
     end
 
     # Provides access to the square at the given row/column
+    #
+    # Returns a Square instance, on which you can call handy methods like beeper? and wall?
     def [](row,column)
       @world[row][column]
     end
@@ -82,10 +90,10 @@ module Karel
     private
 
     SQUARE_FACTORIES = {
-      'B' => lambda { Square.new(true) },
+      'B' => lambda { FreeSquare.new(true) },
       'W' => lambda { Wall.new },
-      ' ' => lambda { Square.new },
-      'K' => lambda { Square.new },
+      ' ' => lambda { FreeSquare.new },
+      'K' => lambda { FreeSquare.new },
     }
 
     # Given a character, returns the square type
@@ -99,7 +107,7 @@ module Karel
       @height.times do |row|
         @world[row] = [] if @world[row].nil?
         @width.times do |column|
-          @world[row][column] = Square.new if @world[row][column].nil?
+          @world[row][column] = FreeSquare.new if @world[row][column].nil?
         end
       end
     end
@@ -107,28 +115,38 @@ module Karel
 
   THE_WORLD = World.new
 
+  # Thrown when Karel does something that causes him to explode
   class Explosion < Exception; end
+  # Thrown if the world was not created in a valid state
   class InvalidWorld < Exception; end
-  class NoKarel < Exception; end
+  # Thrown when a square is occupied when an operation requires it not to be
   class SquareOccupied < Exception; end
+  # Throw when there is no beeper on a square when an operation require there to be
   class NoBeeper < Exception; end
 
-  class Square
+  # A square on the board
+  class Square; end
+
+  # A square that can hold a beeper, or Karel.
+  class FreeSquare < Square
     def initialize(beeper=false)
       @beeper = beeper
     end
 
     def wall?; false; end
+
     def beeper?; @beeper; end
 
     def pick_beeper
       raise NoBeeper unless beeper?
       @beeper = false
     end
+
     def put_beeper
       raise SquareOccupied if beeper?
       @beeper = true
     end
+
     def to_s
       if beeper?
         "B"
@@ -138,7 +156,8 @@ module Karel
     end
   end
 
-  class Wall
+  # A wall square
+  class Wall < Square
     def wall?; true; end
     def beeper?; false; end
     def to_s; "W"; end
