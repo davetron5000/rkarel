@@ -59,6 +59,10 @@ END
     assert THE_WORLD[0,0].beeper?
     THE_WORLD.remove_beeper(0,0)
     assert !THE_WORLD[0,0].beeper?
+
+    assert !THE_WORLD[1,2].beeper?
+    THE_WORLD.add_beeper(1,2)
+    assert THE_WORLD[1,2].beeper?
   end
 
 end

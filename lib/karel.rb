@@ -42,6 +42,10 @@ module Karel
       self[row,column].pick_beeper if self[row,column].beeper?
     end
 
+    def add_beeper(row,column)
+      self[row,column].put_beeper unless self[row,column].beeper?
+    end
+
     # Set the location of Karel
     #
     # location - an array of size 2, with the row/column where karel should be
