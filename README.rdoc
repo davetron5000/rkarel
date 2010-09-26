@@ -1,13 +1,27 @@
 = Karel the Robot in Ruby
 
+Author::  Dave Copeland (mailto:davetron5000 at g mail dot com)
+Copyright:: Copyright (c) 2010 by Dave Copeland
+License:: Distributes under the Apache License, see LICENSE.txt in the source distro
+
+== What is this?
+
 This is a ruby implementation of Karel The Robot[http://www.cs.mtsu.edu/~untch/karel/], a 
 programming language designed for extreme beginners.   It concerns controlling
 a robot, named Karel, in a grid-based world comprised of walls and beepers.  Karel can pick up and put down beepers, move
 forward, and turn left.  Karel can also detect things about his environment.
 
-The language
+== Install
 
-= Usage
+For the time being, there's no gem so just clone the repo.  
+
+    git clone https://davetron5000@github.com/davetron5000/rkarel.git
+    cd rkarel
+    bin/karel init example.karel
+    bin/karel run example.karel
+    bin/karel run -g example.karel
+
+== Usage
 
 While the karel language doesn't have any concept of the world, you must still define one in which your program will run.  This is done
 at the top of the program via:
@@ -57,21 +71,21 @@ Once you've defined your subroutines, you can begin writing your program:
     }
    PICKBEEPER()
 
-== Commands
+=== Commands
 
 [+MOVE+] Move Karel forward one square.  If Karel can't, he explodes and the program aborts
 [+TURNLEFT+] Rotate Karel, in place, to the left
 [+PICKBEEPER+] Pick up the beeper at Karel's position.  If there is no beeper, Karel explodes and the problem aborts
 [+PUTBEEPER+] Put down a beeper at Karel's position.  If there is a beeper or if Karel has no beepers, Karel explodes and the problem aborts
 
-== Control Flow
+=== Control Flow
 
 [+IF+] takes a condition and a curly-braced block to perform if the condition holds
 [+ELSE+] when after an IF, executes the curly-braced block if the condition didn't hold
 [<code>ITERATE(<i>N</i>.TIMES)</code>] perform something a constant number of times
 [+WHILE+] takes a condition and a curly-braced block and repeatedly performs the block's statements until the condition holds
 
-=== Conditions
+==== Conditions
 
 [+on_beeper+] true if Karel is on the same square as a beeper
 [+not_on_beeper+] true if Karel is not on the same square as a beeper
@@ -90,7 +104,7 @@ Once you've defined your subroutines, you can begin writing your program:
 [+facing_west+] true if Karel is facing west
 [+not_facing_west+] true if Karel is not facing west
 
-== Subroutines
+=== Subroutines
 
 You can define your own subroutines via the +DEFINE+ directive:
 
@@ -102,12 +116,12 @@ You can define your own subroutines via the +DEFINE+ directive:
     RUN_TO_WALL()
 
 
-== Whitespace and comments
+=== Whitespace and comments
 
 Whitespace is not significant and is ignored.  Comments are lines starting with optional whitespace then followed by a +#+.  The remainder
 of the line is ignored.
 
-= Example
+== Example
 
 Here's an example program that has Karel grabbing both beepers and stopping on the last one (the one in the upper-left corner):
 
@@ -181,7 +195,7 @@ We can reduce the line count and make it more readable with some subroutines:
     }
     PICKBEEPER()
 
-= Non-DSL Mode
+== Non-DSL Mode
 
 If you wish to use this code as an engine to embed inside another application, the DSL mode is quite inconvienient.  In this case, you can create an object and call the DSL methods on it.
 
@@ -195,11 +209,11 @@ If you wish to use this code as an engine to embed inside another application, t
 
 Need to think this out more; what is possible and what isn't?
 
-= Vim Syntax File 
+== Vim Syntax File 
 
 In <code>contrib</code> is a vim syntax file for karel source as described here.
 
-= Command Line Interface
+== Command Line Interface
 
     karel command_name [command-specific options] [--] arguments...
 
@@ -207,31 +221,30 @@ In <code>contrib</code> is a vim syntax file for karel source as described here.
 * Use the command <tt>help command_name</tt> to get a help for +command_name+
 * Use <tt>--</tt> to stop command line argument processing; useful if your arguments have dashes in them
 
-== Commands
+=== Commands
 [<tt>check</tt>] Checks that a Karel program appears valid
 [<tt>help</tt>] Shows list of commands or help for one command
 [<tt>init</tt>] Creates a new Karel program with appropriate boilerplate
 [<tt>run</tt>] Executes a Karel program
 
-=== <tt>check source_file</tt>
+==== <tt>check source_file</tt>
 
 Checks that a Karel program appears valid
 
-=== <tt>help [command]</tt>
+==== <tt>help [command]</tt>
 
 Shows list of commands or help for one command
 
-=== <tt>init source_file</tt>
+==== <tt>init source_file</tt>
 
 Creates a new Karel program with appropriate boilerplate
 
-=== <tt>run source_file</tt>
+==== <tt>run source_file</tt>
 
 Executes a Karel program
 
 
-
-==== Options
+===== Options
 These options are specified *after* the command.
 
 [<tt>-g, --debug</tt>] Show the world after each command is executed
