@@ -39,11 +39,11 @@ module Karel
     end
 
     def remove_beeper(row,column)
-      self[row,column].pick_beeper if self[row,column].beeper?
+      self[row,column].pick_beeper
     end
 
     def add_beeper(row,column)
-      self[row,column].put_beeper unless self[row,column].beeper?
+      self[row,column].put_beeper
     end
 
     # Set the location of Karel
@@ -111,6 +111,7 @@ module Karel
   class InvalidWorld < Exception; end
   class NoKarel < Exception; end
   class SquareOccupied < Exception; end
+  class NoBeeper < Exception; end
 
   class Square
     def initialize(beeper=false)
@@ -120,8 +121,14 @@ module Karel
     def wall?; false; end
     def beeper?; @beeper; end
 
-    def pick_beeper; @beeper = false; end
-    def put_beeper; @beeper = true; end
+    def pick_beeper
+      raise NoBeeper unless beeper?
+      @beeper = false
+    end
+    def put_beeper
+      raise SquareOccupied if beeper?
+      @beeper = true
+    end
     def to_s
       if beeper?
         "B"
@@ -136,5 +143,6 @@ module Karel
     def beeper?; false; end
     def to_s; "W"; end
     def put_beeper; raise SquareOccupied; end
+    def pick_beeper; raise NoBeeper; end
   end
 end

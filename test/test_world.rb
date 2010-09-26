@@ -65,7 +65,16 @@ END
     assert THE_WORLD[1,2].beeper?
 
     assert_raises SquareOccupied do
-      THE_WORLD.add_beeper(0,1)
+      THE_WORLD.add_beeper(0,1) 
+    end
+    assert_raises NoBeeper do
+      THE_WORLD.remove_beeper(0,1) 
+    end
+    assert_raises SquareOccupied do
+      THE_WORLD.add_beeper(3,1) 
+    end
+    assert_raises NoBeeper do
+      THE_WORLD.remove_beeper(3,0) 
     end
   end
 
