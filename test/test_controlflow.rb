@@ -61,6 +61,9 @@ END
       executed = true
     }
     assert executed,"Left was clear, but we didn't execute the block"
+    IF(left_not_clear) {
+      assert false
+    }
     TURNLEFT()
     MOVE()
     TURNLEFT()
@@ -69,6 +72,11 @@ END
     IF(left_clear) {
       assert false
     }
+    executed = false
+    IF(left_not_clear) {
+      executed = true
+    }
+    assert executed,"Left wasn't clear, but we didn't execute the block"
   end
 
   def test_right_clear
@@ -82,6 +90,9 @@ END
       executed = true
     }
     assert executed,"Right was clear, but we didn't execute the block"
+    IF(right_not_clear) {
+      assert false
+    }
     TURNLEFT()
     TURNLEFT()
     TURNLEFT()
@@ -90,6 +101,11 @@ END
     IF(right_clear) {
       assert false
     }
+    executed = false
+    IF(right_not_clear) {
+      executed = true
+    }
+    assert executed,"Right wasn't clear, but we didn't execute the block"
   end
   
   def test_on_beeper
@@ -103,6 +119,9 @@ END
     IF(on_beeper) {
       executed = true
     }
+    IF(not_on_beeper) {
+      assert false
+    }
     assert executed,"We were on a bepper, but the block didn't execute"
     PICKBEEPER()
     assert !THE_WORLD[0,1].beeper?
@@ -113,6 +132,11 @@ END
     IF(on_beeper) {
       assert false
     }
+    executed = false
+    IF(not_on_beeper) {
+      executed = true
+    }
+    assert executed,"We were not on a bepper, but the block didn't execute"
   end
 
   def test_facing
@@ -133,13 +157,21 @@ END
 
   def assert_facing(direction)
     IF (("facing_" + direction.to_s).to_sym) {
-      # success
+      assert true
+    }
+    IF (("not_facing_" + direction.to_s).to_sym) {
+      assert false,"We are facing #{direction.to_is}, but the block executed for not_facing it!"
     }
     Karel::DIRECTIONS.each do |dir|
       if dir != direction
         IF (("facing_" + dir.to_s).to_sym) {
           assert false,"Not expected to be facing #{dir.to_s}"
         }
+        executed = false
+        IF (("not_facing_" + dir.to_s).to_sym) {
+          executed = true
+        }
+        assert executed,"We are NOT facing #{dir.to_s}, however the block for not_ didn't execute!"
       end
     end
   end
