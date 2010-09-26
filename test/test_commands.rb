@@ -1,9 +1,6 @@
-require 'test/unit'
-require 'karel'
+require 'karel_testcase'
 
-class TestCommands < Test::Unit::TestCase
-  include Karel
-
+class TestCommands < KarelTestCase
   def test_basic_move
     WORLD <<END
 BWW 

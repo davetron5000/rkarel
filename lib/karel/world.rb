@@ -10,9 +10,10 @@ module Karel
     # This isn't the constructor because our DSL requires uppercase and we don't want
     # warnings by creating the world twice (once when declaring it as a constant in the Karel
     # module and once inside the module method WORLD).
-    def create_from_string(definition)
+    def create_from_string(definition,karel)
       @karel = nil
-      KAREL.reset
+      @karel_instance = karel
+      @karel_instance.reset
       @world = []
       @width = 0
       row = 0
@@ -86,7 +87,7 @@ module Karel
         @width.times do |column|
           kr,kc = karel
           if (kr == row) && (kc == column)
-            string += KAREL.to_s
+            string += @karel_instance.to_s
           else
             string += self[row,column].to_s
           end

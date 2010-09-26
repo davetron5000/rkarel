@@ -1,8 +1,6 @@
-require 'test/unit'
-require 'karel'
+require 'karel_testcase'
 
-class TestDefine < Test::Unit::TestCase
-  include Karel
+class TestControlFlow < KarelTestCase
 
   def test_define
     WORLD <<END

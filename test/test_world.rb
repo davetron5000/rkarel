@@ -1,9 +1,6 @@
-require 'test/unit'
-require 'karel'
+require 'karel_testcase'
 
-class TestWorld < Test::Unit::TestCase
-  include Karel
-
+class TestControlFlow < KarelTestCase
   def test_valid_world
     WORLD <<END
 KWB 

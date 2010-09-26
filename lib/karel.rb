@@ -5,7 +5,6 @@ require 'karel/square'
 require 'karel/world'
 
 module Karel
-
   include Commands
 
   THE_WORLD = World.new

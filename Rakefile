@@ -7,19 +7,21 @@ require 'rcov/rcovtask'
 
 Rcov::RcovTask.new(:rcov) do |t|
   t.libs << "test"
+  t.libs << "ext"
   t.test_files = FileList['test/test*.rb']
   t.output_dir = 'coverage'
 end
 
 Rake::TestTask.new do |t|
   t.libs << "test"
+  t.libs << "ext"
   t.test_files = FileList['test/test*.rb']
   t.verbose = true
 end
 
 Rake::RDocTask.new do |rd|
   rd.main = "README.rdoc"
-  rd.rdoc_files.include("README.rdoc","lib/**/*.rb","bin/**/*")
+  rd.rdoc_files.include("README.rdoc","lib/**/*.rb","bin/**/*", "ext/**/*")
   rd.title = 'Your application title'
 end
 

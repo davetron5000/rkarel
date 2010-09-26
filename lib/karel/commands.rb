@@ -1,15 +1,19 @@
+require 'fixnum_TIMES.rb'
 module Karel
   module Commands
     INFINITE_LOOP_NUM_STEPS = 1000
     # Create the world with the given initialization string
     def WORLD(string)
       @subroutines ||= {}
-      THE_WORLD.create_from_string(string)
-      unless @silent
-        puts "Initial State"
-        puts THE_WORLD.to_s
-      end
+      world_instance.create_from_string(string,karel_instance)
+      #unless @silent
+      #  puts "Initial State"
+      #  puts THE_WORLD.to_s
+      #end
     end
+
+    def karel_instance; KAREL; end
+    def world_instance; THE_WORLD; end
     
     def DEBUG
       @debug = true
@@ -23,29 +27,29 @@ module Karel
 
     def debug_command(command)
       if @debug
-        puts "#{KAREL.num_beepers} beepers> #{command}"
-        puts THE_WORLD.to_s
+        puts "#{karel_instance.num_beepers} beepers> #{command}"
+        puts world_instance.to_s
       end
     end
 
     # Moves Karel forward one square
     def MOVE
-      x,y = Karel.coordinates_after_move_from(KAREL.direction,*THE_WORLD.karel)
-      THE_WORLD.karel=[x,y]
+      x,y = Karel.coordinates_after_move_from(karel_instance.direction,*world_instance.karel)
+      world_instance.karel=[x,y]
       debug_command('MOVE')
     end
 
     # Turns karel to the left in place
     def TURNLEFT
-      KAREL.turnleft
+      karel_instance.turnleft
       debug_command('TURNLEFT')
     end
 
     def PICKBEEPER
-      karel = THE_WORLD.karel
+      karel = world_instance.karel
       begin
-      THE_WORLD.remove_beeper(*karel)
-      KAREL.put_beeper_in_bag
+      world_instance.remove_beeper(*karel)
+      karel_instance.put_beeper_in_bag
       rescue NoBeeper => x
         raise Explosion
       end
@@ -53,9 +57,9 @@ module Karel
     end
 
     def PUTBEEPER
-      karel = THE_WORLD.karel
-      KAREL.remove_beeper_from_bag
-      THE_WORLD.add_beeper(*karel)
+      karel = world_instance.karel
+      karel_instance.remove_beeper_from_bag
+      world_instance.add_beeper(*karel)
       debug_command('PUTBEEPER')
     end
 
@@ -115,27 +119,27 @@ module Karel
 
     def condition_met?(condition)
       raise "No such condition #{condition}" unless CONDITIONS[condition]
-      CONDITIONS[condition].call(*THE_WORLD.karel)
+      CONDITIONS[condition].call(world_instance,karel_instance,*world_instance.karel)
     end
 
     CONDITIONS = {
-      :on_beeper    => lambda{ |row,column| THE_WORLD.clear?(row,column) && THE_WORLD[row,column].beeper? },
-      :front_clear  => lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(KAREL.direction,row,column)) },
-      :left_clear   => lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(Karel.left_of(KAREL.direction),row,column)) },
-      :right_clear  => lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(Karel.right_of(KAREL.direction),row,column)) },
-      :facing_north => lambda{ |row,column| KAREL.direction == :north },
-      :facing_south => lambda{ |row,column| KAREL.direction == :south },
-      :facing_east  => lambda{ |row,column| KAREL.direction == :east },
-      :facing_west  => lambda{ |row,column| KAREL.direction == :west },
+      :on_beeper    => lambda{ |world,karel,row,column| world.clear?(row,column) && world[row,column].beeper? },
+      :front_clear  => lambda{ |world,karel,row,column| world.clear?(*Karel.coordinates_after_move_from(karel.direction,row,column)) },
+      :left_clear   => lambda{ |world,karel,row,column| world.clear?(*Karel.coordinates_after_move_from(Karel.left_of(karel.direction),row,column)) },
+      :right_clear  => lambda{ |world,karel,row,column| world.clear?(*Karel.coordinates_after_move_from(Karel.right_of(karel.direction),row,column)) },
+      :facing_north => lambda{ |world,karel,row,column| karel.direction == :north },
+      :facing_south => lambda{ |world,karel,row,column| karel.direction == :south },
+      :facing_east  => lambda{ |world,karel,row,column| karel.direction == :east },
+      :facing_west  => lambda{ |world,karel,row,column| karel.direction == :west },
 
-      :not_on_beeper    => lambda{ |row,column| !CONDITIONS[:on_beeper].call(row,column) },
-      :front_not_clear  => lambda{ |row,column| !CONDITIONS[:front_clear].call(row,column) },
-      :left_not_clear   => lambda{ |row,column| !CONDITIONS[:left_clear].call(row,column) },
-      :right_not_clear  => lambda{ |row,column| !CONDITIONS[:right_clear].call(row,column) },
-      :not_facing_north => lambda{ |row,column| !CONDITIONS[:facing_north].call(row,column) },
-      :not_facing_south => lambda{ |row,column| !CONDITIONS[:facing_south].call(row,column) },
-      :not_facing_east  => lambda{ |row,column| !CONDITIONS[:facing_east].call(row,column) },
-      :not_facing_west  => lambda{ |row,column| !CONDITIONS[:facing_west].call(row,column) },
+      :not_on_beeper    => lambda{ |world,karel,row,column| !CONDITIONS[:on_beeper].call(world,karel,row,column) },
+      :front_not_clear  => lambda{ |world,karel,row,column| !CONDITIONS[:front_clear].call(world,karel,row,column) },
+      :left_not_clear   => lambda{ |world,karel,row,column| !CONDITIONS[:left_clear].call(world,karel,row,column) },
+      :right_not_clear  => lambda{ |world,karel,row,column| !CONDITIONS[:right_clear].call(world,karel,row,column) },
+      :not_facing_north => lambda{ |world,karel,row,column| !CONDITIONS[:facing_north].call(world,karel,row,column) },
+      :not_facing_south => lambda{ |world,karel,row,column| !CONDITIONS[:facing_south].call(world,karel,row,column) },
+      :not_facing_east  => lambda{ |world,karel,row,column| !CONDITIONS[:facing_east].call(world,karel,row,column) },
+      :not_facing_west  => lambda{ |world,karel,row,column| !CONDITIONS[:facing_west].call(world,karel,row,column) },
     }
 
     CONDITIONS.each_key do |condition|
@@ -145,9 +149,4 @@ module Karel
     end
   end
 
-end
-class Fixnum
-  def TIMES
-    self
-  end
 end

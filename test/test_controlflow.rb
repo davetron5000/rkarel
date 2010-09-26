@@ -1,8 +1,6 @@
-require 'test/unit'
-require 'karel'
+require 'karel_testcase'
 
-class TestControlFlow < Test::Unit::TestCase
-  include Karel
+class TestControlFlow < KarelTestCase
 
   def test_iterate
     WORLD <<END
