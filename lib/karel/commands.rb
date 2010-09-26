@@ -48,14 +48,14 @@ module Karel
     end
 
     CONDITIONS = {
-      :on_beeper =>    lambda{ |row,column| THE_WORLD.clear?(row,column) && THE_WORLD[row,column].beeper? },
-      :front_clear =>  lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(KAREL.direction,row,column)) },
-      :left_clear =>  lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(Karel.left_of(KAREL.direction),row,column)) },
-      :right_clear =>  lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(Karel.right_of(KAREL.direction),row,column)) },
-      :facing_north => lambda{ |row,column| false },
-      :facing_south => lambda{ |row,column| false },
-      :facing_east =>  lambda{ |row,column| false },
-      :facing_west =>  lambda{ |row,column| false },
+      :on_beeper    => lambda{ |row,column| THE_WORLD.clear?(row,column) && THE_WORLD[row,column].beeper? },
+      :front_clear  => lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(KAREL.direction,row,column)) },
+      :left_clear   => lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(Karel.left_of(KAREL.direction),row,column)) },
+      :right_clear  => lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(Karel.right_of(KAREL.direction),row,column)) },
+      :facing_north => lambda{ |row,column| KAREL.direction == :north },
+      :facing_south => lambda{ |row,column| KAREL.direction == :south },
+      :facing_east  => lambda{ |row,column| KAREL.direction == :east },
+      :facing_west  => lambda{ |row,column| KAREL.direction == :west },
     }
 
     CONDITIONS.each_key do |condition|

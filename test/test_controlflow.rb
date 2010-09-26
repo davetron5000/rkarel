@@ -98,4 +98,33 @@ END
       assert false
     }
   end
+
+  def test_facing
+    WORLD <<END
+K
+  
+END
+    assert_facing(:north)
+    TURNLEFT()
+    assert_facing(:west)
+    TURNLEFT()
+    assert_facing(:south)
+    TURNLEFT()
+    assert_facing(:east)
+    TURNLEFT()
+    assert_facing(:north)
+  end
+
+  def assert_facing(direction)
+    IF (("facing_" + direction.to_s).to_sym) {
+      # success
+    }
+    Karel::DIRECTIONS.each do |dir|
+      if dir != direction
+        IF (("facing_" + dir.to_s).to_sym) {
+          assert false,"Not expected to be facing #{dir.to_s}"
+        }
+      end
+    end
+  end
 end
