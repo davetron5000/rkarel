@@ -44,6 +44,59 @@ END
     assert_move_explodes
   end
 
+  def test_beepers
+WORLD <<END
+KB
+  
+END
+    assert_equal 0,KAREL.num_beepers
+    TURNLEFT()
+    TURNLEFT()
+    TURNLEFT()
+    MOVE()
+    expected_string = <<END
++--+
+| >|
+|  |
++--+
+END
+    assert_equal expected_string, THE_WORLD.to_s
+    PICKBEEPER()
+    assert_equal 1,KAREL.num_beepers
+    assert !THE_WORLD[0,1].beeper?
+    expected_string = <<END
++--+
+| >|
+|  |
++--+
+END
+    assert_equal expected_string, THE_WORLD.to_s
+    TURNLEFT()
+    TURNLEFT()
+    TURNLEFT()
+    MOVE()
+    PUTBEEPER()
+    assert_equal 0,KAREL.num_beepers
+    assert THE_WORLD[1,1].beeper?
+    TURNLEFT()
+    TURNLEFT()
+    TURNLEFT()
+    MOVE()
+    expected_string = <<END
++--+
+|  |
+|<B|
++--+
+END
+    assert_equal expected_string, THE_WORLD.to_s
+    assert_raises Explosion do
+      PUTBEEPER()
+    end
+    assert_raises Explosion do
+      PICKBEEPER()
+    end
+  end
+
   private
 
   def assert_move_explodes

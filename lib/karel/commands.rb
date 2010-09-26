@@ -24,5 +24,21 @@ module Karel
       KAREL.turnleft
     end
 
+    def PICKBEEPER
+      karel = THE_WORLD.karel
+      begin
+      THE_WORLD.remove_beeper(*karel)
+      KAREL.put_beeper_in_bag
+      rescue NoBeeper => x
+        raise Explosion
+      end
+    end
+
+    def PUTBEEPER
+      karel = THE_WORLD.karel
+      KAREL.remove_beeper_from_bag
+      THE_WORLD.add_beeper(*karel)
+    end
+
   end
 end
