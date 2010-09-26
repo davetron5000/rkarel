@@ -7,33 +7,36 @@ module Karel
     def IS(definition)
       @world = []
       @width = 0
-      x = 0
-      y = 0
-      definition.split(/\n/).each do |row|
-        @width = row.length if row.length > @width
-        row.split(//).each do |square|
-          @karel = [x,y] if square == 'K'
+      row = 0
+      column = 0
+      rows = definition.split(/\n/)
+      @height = rows.size
+      rows.each do |row_data|
+        @width = row_data.length if row_data.length > @width
+        row_data.split(//).each do |square|
+          @karel = [row,column] if square == 'K'
+          @world[row] ||= []
           if square == 'B' || square == 'W'
-            @world[x] ||= []
             if square == 'B'
-              @world[x][y] = Square.new(true)
+              @world[row][column] = Square.new(true)
             elsif square == 'W'
-              @world[x][y] = Wall.new
+              @world[row][column] = Wall.new
             else
-              raise "#{square} is not handled"
+              raise "Square type #{square} is not handled"
             end
+          else
+            @world[row][column] = Square.new
           end
-          y += 1
+          column += 1
         end
-        y = 0
-        x += 1
+        column = 0
+        row += 1
       end
       @karel = [0,0]
-      @height = x
-      @width.times do |x|
-        @world[x] = [] if @world[x].nil?
-        @height.times do |y|
-          @world[x][y] = Square.new if @world[x][y].nil?
+      @height.times do |row|
+        @world[row] = [] if @world[row].nil?
+        @width.times do |column|
+          @world[row][column] = Square.new if @world[row][column].nil?
         end
       end
     end
@@ -51,19 +54,19 @@ module Karel
       @karel = location
     end
 
-    def [](x,y)
-      @world[x][y]
+    def [](row,column)
+      @world[row][column]
     end
 
     def to_s
       string = ""
-      @world.each_index do |x|
-        @width.times do |y|
-          kx,ky = karel
-          if (kx == x) && (ky == y)
+      @height.times do |row|
+        @width.times do |column|
+          kr,kc = karel
+          if (kr == row) && (kc == column)
             string += "K"
           else
-            string += self[x,y].to_s
+            string += self[row,column].to_s
           end
         end
         string += "\n"

@@ -6,11 +6,11 @@ class TestWorld < Test::Unit::TestCase
 
   def test_valid_world
     WORLD <<END
-KWB
+KWB 
 
  B
 END
-    assert_equal 3,THE_WORLD.width
+    assert_equal 4,THE_WORLD.width
     assert_equal 3,THE_WORLD.height
     x,y = THE_WORLD.karel
     assert_equal 0,x
@@ -18,7 +18,7 @@ END
     assert THE_WORLD[0,1].wall?
     assert THE_WORLD[0,2].beeper?
     assert THE_WORLD[2,1].beeper?
-    assert_equal "KWB\n   \n B \n", THE_WORLD.to_s
+    assert_equal "KWB \n    \n B  \n", THE_WORLD.to_s
     THE_WORLD.karel = [0,2]
     x,y = THE_WORLD.karel
     assert_equal 0,x
