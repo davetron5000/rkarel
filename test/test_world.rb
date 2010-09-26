@@ -49,4 +49,16 @@ END
     end
   end
 
+  def test_changes_to_world
+    WORLD <<END
+BWWK
+ W
+ W
+ BB
+END
+    assert THE_WORLD[0,0].beeper?
+    THE_WORLD.remove_beeper(0,0)
+    assert !THE_WORLD[0,0].beeper?
+  end
+
 end
