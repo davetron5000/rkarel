@@ -25,7 +25,7 @@ initial location represented as a "K".  Karel is assumed to be facing north with
 
 You then can define subroutines as such:
 
-    DEFINE 'TURNRIGHT' {
+    DEFINE('TURNRIGHT') {
       TURNLEFT()
       TURNLEFT()
       TURNLEFT()
