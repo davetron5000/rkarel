@@ -33,30 +33,30 @@ You then can define subroutines as such:
 
 You can then call this subroutine as you would any other
 
-    MOVE
-    TURNRIGHT
-    MOVE
-    MOVE
+    MOVE()
+    TURNRIGHT()
+    MOVE()
+    MOVE()
 
 Once you've defined your subroutines, you can begin writing your program:
 
     PROGRAM {
-      MOVE
-      TURNLEFT
+      MOVE()
+      TURNLEFT()
       ITERATE 3 TIMES {
         MOVE
       }
       IF front_clear {
-        MOVE
+        MOVE()
       }
       ELSE {
-        PUTBEEPER
+        PUTBEEPER()
       }
-      TURNLEFT
+      TURNLEFT()
       WHILE not_on_beeper {
         MOVE
       }
-      PICKBEEPER
+      PICKBEEPER()
     }
 
 == Commands

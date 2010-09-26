@@ -4,6 +4,23 @@ module Karel
     THE_WORLD.create_from_string(string)
   end
 
+  def MOVE
+    x,y = THE_WORLD.karel
+    if KAREL.direction == :north
+      THE_WORLD.karel=[x-1,y]
+    elsif KAREL.direction == :south
+      THE_WORLD.karel=[x+1,y]
+    elsif KAREL.direction == :west
+      THE_WORLD.karel=[x,y-1]
+    elsif KAREL.direction == :east
+      THE_WORLD.karel=[x,y+1]
+    end
+  end
+
+  def TURNLEFT
+    KAREL.turnleft
+  end
+
   # The world in which Karel operates.  
   class World
 
@@ -113,7 +130,24 @@ module Karel
     end
   end
 
+  class Karel
+    attr_reader :direction
+    def initialize
+      @direction = :north
+    end
+
+    def turnleft
+      new_index = DIRECTIONS.index(@direction) + 1
+      new_index = 0 if new_index >= DIRECTIONS.size
+      @direction = DIRECTIONS[new_index]
+    end
+
+    private 
+    DIRECTIONS = [:north,:west,:south,:east]
+  end
+
   THE_WORLD = World.new
+  KAREL = Karel.new
 
   # Thrown when Karel does something that causes him to explode
   class Explosion < Exception; end
