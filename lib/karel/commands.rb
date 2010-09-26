@@ -40,5 +40,15 @@ module Karel
       THE_WORLD.add_beeper(*karel)
     end
 
+    def ITERATE(num,&block)
+      num.times { block.call }
+    end
+
+  end
+
+end
+class Fixnum
+  def TIMES
+    self
   end
 end
