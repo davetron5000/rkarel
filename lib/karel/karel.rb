@@ -23,13 +23,23 @@ module Karel
     end
 
     def turnleft
-      new_index = DIRECTIONS.index(@direction) + 1
-      new_index = 0 if new_index >= DIRECTIONS.size
-      @direction = DIRECTIONS[new_index]
+      @direction = Karel.left_of(@direction)
     end
 
     def to_s
       STRINGS[direction]
+    end
+
+    def self.left_of(direction)
+      new_index = DIRECTIONS.index(direction) + 1
+      new_index = 0 if new_index >= DIRECTIONS.size
+      DIRECTIONS[new_index]
+    end
+
+    def self.right_of(direction)
+      new_index = DIRECTIONS.index(direction) - 1
+      new_index = DIRECTIONS.size - 1 if new_index < 0
+      DIRECTIONS[new_index]
     end
 
     def self.coordinates_after_move_from(direction,x,y)
@@ -44,8 +54,9 @@ module Karel
       end
     end
 
-    private 
     DIRECTIONS = [:north,:west,:south,:east]
+
+    private 
     STRINGS = {
       :north => '^',
       :west => '<',

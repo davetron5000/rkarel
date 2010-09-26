@@ -46,6 +46,14 @@ module Karel
       :front_clear
     end
 
+    def left_clear
+      :left_clear
+    end
+
+    def right_clear
+      :right_clear
+    end
+
     def condition_met?(condition)
       raise "No such condition #{condition}" unless CONDITIONS[condition]
       CONDITIONS[condition].call(*THE_WORLD.karel)
@@ -57,8 +65,8 @@ module Karel
     CONDITIONS = {
       :on_beeper =>    lambda{ |row,column| THE_WORLD.clear?(row,column) && THE_WORLD[row][column].beeper? },
       :front_clear =>  lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(KAREL.direction,row,column)) },
-      :left_clear =>   lambda{ |row,column| false },
-      :right_clear =>  lambda{ |row,column| false },
+      :left_clear =>  lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(Karel.left_of(KAREL.direction),row,column)) },
+      :right_clear =>  lambda{ |row,column| THE_WORLD.clear?(*Karel.coordinates_after_move_from(Karel.right_of(KAREL.direction),row,column)) },
       :facing_north => lambda{ |row,column| false },
       :facing_south => lambda{ |row,column| false },
       :facing_east =>  lambda{ |row,column| false },
