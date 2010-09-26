@@ -3,6 +3,13 @@ require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'rake/testtask'
+require 'rcov/rcovtask'
+
+Rcov::RcovTask.new(:rcov) do |t|
+  t.libs << "test"
+  t.test_files = FileList['test/test*.rb']
+  t.output_dir = 'coverage'
+end
 
 Rake::TestTask.new do |t|
   t.libs << "test"

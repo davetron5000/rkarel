@@ -48,4 +48,18 @@ END
       DEFINE('A9') { }
     end
   end
+
+  def test_method_missing_still_behaves
+    WORLD <<END
+K  W
+    
+    
+END
+    assert_raises NoMethodError do
+      BLAH()
+    end
+    assert_raises NoMethodError do
+      BLAH(1,2,3)
+    end
+  end
 end
