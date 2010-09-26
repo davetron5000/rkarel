@@ -36,8 +36,19 @@ module Karel
       num.times { block.call }
     end
 
+    @last_condition = nil
     def IF(condition,&block)
       if condition_met? condition
+        block.call
+      end
+      @last_condition = condition
+    end
+
+    def ELSE(&block)
+      raise "No IF with this ELSE!" if @last_condition.nil?
+      condition = @last_condition
+      @last_condition = nil
+      unless (condition_met? condition)
         block.call
       end
     end

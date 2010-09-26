@@ -107,6 +107,14 @@ END
     assert_facing(:north)
   end
 
+  def test_lonely_ELSE
+    assert_raises RuntimeError do
+      ELSE {
+        # this shouldn't happen
+      }
+    end
+  end
+
   def assert_facing(direction)
     assert_IF_executed(("facing_" + direction.to_s).to_sym)
     assert_IF_not_executed(("not_facing_" + direction.to_s).to_sym)
@@ -123,12 +131,20 @@ END
     IF(condition) {
       executed = true
     }
+    ELSE {
+      assert false,"#{condition.to_s} holds, but we executed the else block?!?!?"
+    }
     assert executed,"#{condition.to_s} holds, however we didn't execute the block for it"
   end
 
   def assert_IF_not_executed(condition)
+    executed_else = false
     IF(condition) {
       assert false,"#{condition.to_s} doesn't hold, yet we executed the block!"
     }
+    ELSE {
+      executed_else = true
+    }
+    assert executed_else,"#{condition.to_s} doesn't hold, but we didn't execute the else block!"
   end
 end
