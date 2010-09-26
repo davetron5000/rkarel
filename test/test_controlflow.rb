@@ -135,20 +135,22 @@ END
     assert_equal [0,7],THE_WORLD.karel
   end
 
-  def test_while_fancier
+  def test_while_avoids_infinite_loop
     WORLD <<END
-K       W
-WWWWW  
+K       
+WWW WW 
+B   WW
 END
-
     TURNLEFT()
     TURNLEFT()
     TURNLEFT()
-    WHILE(right_not_clear) {
-      MOVE()
-    }
-    assert_IF_executed(left_not_clear)
-    assert_equal [0,5],THE_WORLD.karel
+    assert_raises PossibleInfiniteLoop do
+      WHILE(front_clear) {
+        ITERATE(4.TIMES) {
+          TURNLEFT()
+        }
+      }
+    end
   end
 
   def test_if_and_while

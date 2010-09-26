@@ -9,4 +9,7 @@ module Karel
   class NoBeeper < Exception; end
   # Thrown when a subroutine is defined that has a bad or not-allowed name
   class BadSubroutine < Exception; end
+  # Thrown when a while loop has gone on too long and we think there might
+  # be an infinite loop
+  class PossibleInfiniteLoop < Exception; end
 end

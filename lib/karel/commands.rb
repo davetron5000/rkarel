@@ -1,5 +1,6 @@
 module Karel
   module Commands
+    INFINITE_LOOP_NUM_STEPS = 1000
     # Create the world with the given initialization string
     def WORLD(string)
       @subroutines ||= {}
@@ -61,8 +62,11 @@ module Karel
     end
 
     def WHILE(condition,&block)
+      steps = 0
       while (condition_met? condition)
         block.call
+        steps += 1
+        raise PossibleInfiniteLoop if steps > INFINITE_LOOP_NUM_STEPS
       end
     end
 
