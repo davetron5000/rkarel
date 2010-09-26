@@ -18,7 +18,14 @@ END
     assert THE_WORLD[0,1].wall?
     assert THE_WORLD[0,2].beeper?
     assert THE_WORLD[2,1].beeper?
-    assert_equal "KWB \n    \n B  \n", THE_WORLD.to_s
+    expected_string = <<END
++----+
+|^WB |
+|    |
+| B  |
++----+
+END
+    assert_equal expected_string, THE_WORLD.to_s
     THE_WORLD.karel = [0,2]
     x,y = THE_WORLD.karel
     assert_equal 0,x

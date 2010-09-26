@@ -34,6 +34,7 @@ module Karel
     # module and once inside the module method WORLD).
     def create_from_string(definition)
       @karel = nil
+      KAREL.reset
       @world = []
       @width = 0
       row = 0
@@ -75,6 +76,7 @@ module Karel
     #
     # Raises an Explosion if you try to put Karel where there is a wall
     def karel=(location)
+      raise Explosion,"#{location.inspect} is out of bounds" unless in_bounds?(*location)
       raise Explosion if self[*location].wall?
       @karel = location
     end
@@ -89,18 +91,24 @@ module Karel
     # Returns the string representation, which looks like the 
     # the string used to construct this
     def to_s
-      string = ""
+      string = "+"
+      @width.times { string += '-' }
+      string += "+\n"
       @height.times do |row|
+        string += "|"
         @width.times do |column|
           kr,kc = karel
           if (kr == row) && (kc == column)
-            string += "K"
+            string += KAREL.to_s
           else
             string += self[row,column].to_s
           end
         end
-        string += "\n"
+        string += "|\n"
       end
+      string += "+"
+      @width.times { string += '-' }
+      string += "+\n"
       string
     end
 
@@ -120,6 +128,18 @@ module Karel
       SQUARE_FACTORIES[square].call
     end
 
+    def in_bounds?(row,column)
+      if row < 0 || column < 0
+        false
+      elsif row >= @height
+        false
+      elsif column >= @width
+        false
+      else
+        true
+      end
+    end
+
     def fill_in_empty_spaces
       @height.times do |row|
         @world[row] = [] if @world[row].nil?
@@ -133,6 +153,10 @@ module Karel
   class Karel
     attr_reader :direction
     def initialize
+      reset
+    end
+
+    def reset
       @direction = :north
     end
 
@@ -142,8 +166,18 @@ module Karel
       @direction = DIRECTIONS[new_index]
     end
 
+    def to_s
+      STRINGS[direction]
+    end
+
     private 
     DIRECTIONS = [:north,:west,:south,:east]
+    STRINGS = {
+      :north => '^',
+      :west => '<',
+      :south => 'v',
+      :east => '>',
+    }
   end
 
   THE_WORLD = World.new
