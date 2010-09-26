@@ -36,6 +36,12 @@ module Karel
       num.times { block.call }
     end
 
+    def WHILE(condition,&block)
+      while (condition_met? condition)
+        block.call
+      end
+    end
+
     @last_condition = nil
     def IF(condition,&block)
       if condition_met? condition

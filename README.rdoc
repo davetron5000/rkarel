@@ -46,14 +46,14 @@ Once you've defined your subroutines, you can begin writing your program:
       ITERATE(3.TIMES) {
         MOVE
       }
-      IF front_clear {
+      IF(front_clear) {
         MOVE()
       }
       ELSE {
         PUTBEEPER()
       }
       TURNLEFT()
-      WHILE not_on_beeper {
+      WHILE(not_on_beeper) {
         MOVE
       }
       PICKBEEPER()

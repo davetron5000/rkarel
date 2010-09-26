@@ -108,12 +108,71 @@ END
   end
 
   def test_lonely_ELSE
+    WORLD <<END
+K
+  
+END
     assert_raises RuntimeError do
       ELSE {
         # this shouldn't happen
       }
     end
   end
+
+  def test_while_basic
+    WORLD <<END
+K       W
+  
+END
+
+    TURNLEFT()
+    TURNLEFT()
+    TURNLEFT()
+    WHILE(front_clear) {
+      MOVE()
+    }
+    assert_IF_executed(front_not_clear)
+    assert_equal [0,7],THE_WORLD.karel
+  end
+
+  def test_while_fancier
+    WORLD <<END
+K       W
+WWWWW  
+END
+
+    TURNLEFT()
+    TURNLEFT()
+    TURNLEFT()
+    WHILE(right_not_clear) {
+      MOVE()
+    }
+    assert_IF_executed(left_not_clear)
+    assert_equal [0,5],THE_WORLD.karel
+  end
+
+  def test_if_and_while
+    WORLD <<END
+K  B  B  W
+WWWWWWW
+END
+    ITERATE(3.TIMES) {
+      TURNLEFT()
+    }
+    WHILE(right_not_clear) {
+      MOVE()
+      IF(on_beeper) {
+        PICKBEEPER()
+      }
+      puts "\n";puts THE_WORLD.to_s
+    }
+    assert_equal 2,KAREL.num_beepers
+    assert_equal [0,7],THE_WORLD.karel
+    assert [0,3],!THE_WORLD.beeper?
+    assert [0,6],!THE_WORLD.beeper?
+  end
+
+  private
 
   def assert_facing(direction)
     assert_IF_executed(("facing_" + direction.to_s).to_sym)
