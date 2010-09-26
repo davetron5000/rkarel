@@ -92,7 +92,12 @@ Once you've defined your subroutines, you can begin writing your program:
 [+facing_west+] true if Karel is facing west
 [+not_facing_west+] true if Karel is not facing west
 
-= Vim Syntax File =
+== Whitespace and comments
+
+Whitespace is not significant and is ignored.  Comments are lines starting with optional whitespace then followed by a +#+.  The remainder
+of the line is ignored.
+
+= Vim Syntax File 
 
 In <code>contrib</code> is a vim syntax file for karel source as described here.
 
