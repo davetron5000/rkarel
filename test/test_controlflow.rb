@@ -77,4 +77,25 @@ END
       assert false
     }
   end
+  
+  def test_on_beeper
+    WORLD <<END
+ B 
+ K
+  
+END
+    MOVE()
+    IF(on_beeper) {
+      PICKBEEPER()
+      TURNLEFT()
+      TURNLEFT()
+      MOVE()
+    }
+    assert_equal [1,1],THE_WORLD.karel
+    assert_equal 1,KAREL.num_beepers
+    assert !THE_WORLD[0,1].beeper?
+    IF(on_beeper) {
+      assert false
+    }
+  end
 end
