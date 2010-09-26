@@ -31,13 +31,23 @@ W
 
 K
 END
+    executed = false
     IF(front_clear) {
-      MOVE()
+      executed = true
     }
-    assert_equal [1,0],THE_WORLD.karel
+    assert executed,"Front was clear, but we didn't execute the block"
+    IF (front_not_clear){
+      assert false
+    }
+    MOVE()
     IF(front_clear) {
       assert false
     }
+    executed = false
+    IF (front_not_clear) {
+      executed = true
+    }
+    assert executed,"Front was not clear, but we didn't execute the block"
   end
 
   def test_left_clear
@@ -46,14 +56,16 @@ W K
 
  
 END
+    executed = false
     IF(left_clear) {
-      TURNLEFT()
-      MOVE()
-      TURNLEFT()
-      TURNLEFT()
-      TURNLEFT()
+      executed = true
     }
-    assert_equal [0,1],THE_WORLD.karel
+    assert executed,"Left was clear, but we didn't execute the block"
+    TURNLEFT()
+    MOVE()
+    TURNLEFT()
+    TURNLEFT()
+    TURNLEFT()
     IF(left_clear) {
       assert false
     }
@@ -65,14 +77,16 @@ K W
 
   
 END
+    executed = false
     IF(right_clear) {
-      TURNLEFT()
-      TURNLEFT()
-      TURNLEFT()
-      MOVE()
-      TURNLEFT()
+      executed = true
     }
-    assert_equal [0,1],THE_WORLD.karel
+    assert executed,"Right was clear, but we didn't execute the block"
+    TURNLEFT()
+    TURNLEFT()
+    TURNLEFT()
+    MOVE()
+    TURNLEFT()
     IF(right_clear) {
       assert false
     }
@@ -85,15 +99,17 @@ END
   
 END
     MOVE()
+    executed = false
     IF(on_beeper) {
-      PICKBEEPER()
-      TURNLEFT()
-      TURNLEFT()
-      MOVE()
+      executed = true
     }
-    assert_equal [1,1],THE_WORLD.karel
-    assert_equal 1,KAREL.num_beepers
+    assert executed,"We were on a bepper, but the block didn't execute"
+    PICKBEEPER()
     assert !THE_WORLD[0,1].beeper?
+    assert_equal 1,KAREL.num_beepers
+    TURNLEFT()
+    TURNLEFT()
+    MOVE()
     IF(on_beeper) {
       assert false
     }

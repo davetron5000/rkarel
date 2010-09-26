@@ -56,6 +56,15 @@ module Karel
       :facing_south => lambda{ |row,column| KAREL.direction == :south },
       :facing_east  => lambda{ |row,column| KAREL.direction == :east },
       :facing_west  => lambda{ |row,column| KAREL.direction == :west },
+
+      :not_on_beeper    => lambda{ |row,column| !CONDITIONS[:on_beeper].call(row,column) },
+      :front_not_clear  => lambda{ |row,column| !CONDITIONS[:front_clear].call(row,column) },
+      :left_not_clear   => lambda{ |row,column| !CONDITIONS[:left_clear].call(row,column) },
+      :right_not_clear  => lambda{ |row,column| !CONDITIONS[:right_clear].call(row,column) },
+      :not_facing_north => lambda{ |row,column| !CONDITIONS[:facing_north].call(row,column) },
+      :not_facing_south => lambda{ |row,column| !CONDITIONS[:facing_south].call(row,column) },
+      :not_facing_east  => lambda{ |row,column| !CONDITIONS[:facing_east].call(row,column) },
+      :not_facing_west  => lambda{ |row,column| !CONDITIONS[:facing_west].call(row,column) },
     }
 
     CONDITIONS.each_key do |condition|
