@@ -31,23 +31,11 @@ W
 
 K
 END
-    executed = false
-    IF(front_clear) {
-      executed = true
-    }
-    assert executed,"Front was clear, but we didn't execute the block"
-    IF (front_not_clear){
-      assert false
-    }
+    assert_IF_executed(front_clear)
+    assert_IF_not_executed(front_not_clear)
     MOVE()
-    IF(front_clear) {
-      assert false
-    }
-    executed = false
-    IF (front_not_clear) {
-      executed = true
-    }
-    assert executed,"Front was not clear, but we didn't execute the block"
+    assert_IF_not_executed(front_clear)
+    assert_IF_executed(front_not_clear)
   end
 
   def test_left_clear
@@ -56,27 +44,15 @@ W K
 
  
 END
-    executed = false
-    IF(left_clear) {
-      executed = true
-    }
-    assert executed,"Left was clear, but we didn't execute the block"
-    IF(left_not_clear) {
-      assert false
-    }
+    assert_IF_executed(left_clear)
+    assert_IF_not_executed(left_not_clear)
     TURNLEFT()
     MOVE()
     TURNLEFT()
     TURNLEFT()
     TURNLEFT()
-    IF(left_clear) {
-      assert false
-    }
-    executed = false
-    IF(left_not_clear) {
-      executed = true
-    }
-    assert executed,"Left wasn't clear, but we didn't execute the block"
+    assert_IF_not_executed(left_clear)
+    assert_IF_executed(left_not_clear)
   end
 
   def test_right_clear
@@ -85,27 +61,15 @@ K W
 
   
 END
-    executed = false
-    IF(right_clear) {
-      executed = true
-    }
-    assert executed,"Right was clear, but we didn't execute the block"
-    IF(right_not_clear) {
-      assert false
-    }
+    assert_IF_executed(right_clear)
+    assert_IF_not_executed(right_not_clear)
     TURNLEFT()
     TURNLEFT()
     TURNLEFT()
     MOVE()
     TURNLEFT()
-    IF(right_clear) {
-      assert false
-    }
-    executed = false
-    IF(right_not_clear) {
-      executed = true
-    }
-    assert executed,"Right wasn't clear, but we didn't execute the block"
+    assert_IF_not_executed(right_clear)
+    assert_IF_executed(right_not_clear)
   end
   
   def test_on_beeper
@@ -115,28 +79,16 @@ END
   
 END
     MOVE()
-    executed = false
-    IF(on_beeper) {
-      executed = true
-    }
-    IF(not_on_beeper) {
-      assert false
-    }
-    assert executed,"We were on a bepper, but the block didn't execute"
+    assert_IF_executed(on_beeper)
+    assert_IF_not_executed(not_on_beeper)
     PICKBEEPER()
     assert !THE_WORLD[0,1].beeper?
     assert_equal 1,KAREL.num_beepers
     TURNLEFT()
     TURNLEFT()
     MOVE()
-    IF(on_beeper) {
-      assert false
-    }
-    executed = false
-    IF(not_on_beeper) {
-      executed = true
-    }
-    assert executed,"We were not on a bepper, but the block didn't execute"
+    assert_IF_not_executed(on_beeper)
+    assert_IF_executed(not_on_beeper)
   end
 
   def test_facing
@@ -156,23 +108,27 @@ END
   end
 
   def assert_facing(direction)
-    IF (("facing_" + direction.to_s).to_sym) {
-      assert true
-    }
-    IF (("not_facing_" + direction.to_s).to_sym) {
-      assert false,"We are facing #{direction.to_is}, but the block executed for not_facing it!"
-    }
+    assert_IF_executed(("facing_" + direction.to_s).to_sym)
+    assert_IF_not_executed(("not_facing_" + direction.to_s).to_sym)
     Karel::DIRECTIONS.each do |dir|
       if dir != direction
-        IF (("facing_" + dir.to_s).to_sym) {
-          assert false,"Not expected to be facing #{dir.to_s}"
-        }
-        executed = false
-        IF (("not_facing_" + dir.to_s).to_sym) {
-          executed = true
-        }
-        assert executed,"We are NOT facing #{dir.to_s}, however the block for not_ didn't execute!"
+        assert_IF_not_executed(("facing_" + dir.to_s).to_sym)
+        assert_IF_executed(("not_facing_" + dir.to_s).to_sym)
       end
     end
+  end
+
+  def assert_IF_executed(condition)
+    executed = false
+    IF(condition) {
+      executed = true
+    }
+    assert executed,"#{condition.to_s} holds, however we didn't execute the block for it"
+  end
+
+  def assert_IF_not_executed(condition)
+    IF(condition) {
+      assert false,"#{condition.to_s} doesn't hold, yet we executed the block!"
+    }
   end
 end
