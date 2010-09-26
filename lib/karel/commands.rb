@@ -25,13 +25,6 @@ module Karel
       @debug = false
     end
 
-    def debug_command(command)
-      if @debug
-        puts "#{karel_instance.num_beepers} beepers> #{command}"
-        puts world_instance.to_s
-      end
-    end
-
     # Moves Karel forward one square
     def MOVE
       x,y = Karel.coordinates_after_move_from(karel_instance.direction,*world_instance.karel)
@@ -67,10 +60,6 @@ module Karel
       raise BadSubroutine unless subroutine_name_ok?(name)
       @subroutines ||= {}
       @subroutines[name.to_sym] = block;
-    end
-
-    def subroutine_name_ok?(name)
-      name =~ /^[A-Z][A-Z_0-9]*[A-Z]$/
     end
 
     # Handles calling subroutines defined
@@ -120,6 +109,17 @@ module Karel
     def condition_met?(condition)
       raise "No such condition #{condition}" unless CONDITIONS[condition]
       CONDITIONS[condition].call(world_instance,karel_instance,*world_instance.karel)
+    end
+
+    def subroutine_name_ok?(name)
+      name =~ /^[A-Z][A-Z_0-9]*[A-Z]$/
+    end
+
+    def debug_command(command)
+      if @debug
+        puts "#{karel_instance.num_beepers} beepers> #{command}"
+        puts world_instance.to_s
+      end
     end
 
     CONDITIONS = {

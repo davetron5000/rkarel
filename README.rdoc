@@ -181,6 +181,20 @@ We can reduce the line count and make it more readable with some subroutines:
     }
     PICKBEEPER()
 
+= Non-DSL Mode
+
+If you wish to use this code as an engine to embed inside another application, the DSL mode is quite inconvienient.  In this case, you can create an object and call the DSL methods on it.
+
+    engine = Engine.new
+    engine.WORLD <<END
+    B WW  B
+      WW  W
+      W  WW
+    K     W
+    END
+
+Need to think this out more; what is possible and what isn't?
+
 = Vim Syntax File 
 
 In <code>contrib</code> is a vim syntax file for karel source as described here.
