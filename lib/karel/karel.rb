@@ -32,6 +32,18 @@ module Karel
       STRINGS[direction]
     end
 
+    def self.coordinates_after_move_from(direction,x,y)
+      if direction == :north
+        [x-1,y]
+      elsif direction == :south
+        [x+1,y]
+      elsif direction == :west
+        [x,y-1]
+      elsif direction == :east
+        [x,y+1]
+      end
+    end
+
     private 
     DIRECTIONS = [:north,:west,:south,:east]
     STRINGS = {

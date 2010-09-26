@@ -31,6 +31,11 @@ END
     assert_equal 0,x
     assert_equal 2,y
     assert THE_WORLD[0,2].beeper?
+    assert !THE_WORLD.clear?(0,1)
+    assert !THE_WORLD.clear?(-1,1)
+    assert !THE_WORLD.clear?(0,-1)
+    assert !THE_WORLD.clear?(10,0)
+    assert !THE_WORLD.clear?(0,10)
   end
 
   def test_world_with_bad_character

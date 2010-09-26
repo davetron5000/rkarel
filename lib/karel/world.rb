@@ -59,6 +59,15 @@ module Karel
       @karel = location
     end
 
+    # True if the square could be moved into by Karel
+    def clear?(row,column)
+      if in_bounds?(row,column)
+        !self[row,column].wall?
+      else
+        false
+      end
+    end
+
     # Provides access to the square at the given row/column
     #
     # Returns a Square instance, on which you can call handy methods like beeper? and wall?

@@ -24,4 +24,19 @@ END
     }
     assert_equal [1,3],THE_WORLD.karel
   end
+
+  def test_if
+    WORLD <<END
+W 
+
+K
+END
+    IF(front_clear) {
+      MOVE()
+    }
+    assert_equal [1,0],THE_WORLD.karel
+    IF(front_clear) {
+      assert false
+    }
+  end
 end
