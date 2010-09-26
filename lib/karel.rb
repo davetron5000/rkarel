@@ -16,6 +16,7 @@ module Karel
     # warnings by creating the world twice (once when declaring it as a constant in the Karel
     # module and once inside the module method WORLD).
     def create_from_string(definition)
+      @karel = nil
       @world = []
       @width = 0
       row = 0
@@ -33,6 +34,7 @@ module Karel
         column = 0
         row += 1
       end
+      raise NoKarel unless @karel
       fill_in_empty_spaces
     end
 
@@ -97,11 +99,9 @@ module Karel
 
   THE_WORLD = World.new
 
-  class Explosion < Exception
-  end
-
-  class InvalidWorld < Exception
-  end
+  class Explosion < Exception; end
+  class InvalidWorld < Exception; end
+  class NoKarel < Exception; end
 
   class Square
     def initialize(beeper=false)

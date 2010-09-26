@@ -29,12 +29,22 @@ END
     end
   end
 
-  def test_valid_world_with_bad_character
+  def test_world_with_bad_character
     assert_raises InvalidWorld do
     WORLD <<END
 KWB 
 
  BX
+END
+    end
+  end
+
+  def test_world_with_no_karel
+    assert_raises NoKarel do
+    WORLD <<END
+ WB 
+
+ B
 END
     end
   end
