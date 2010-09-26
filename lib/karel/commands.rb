@@ -2,6 +2,7 @@ module Karel
   module Commands
     # Create the world with the given initialization string
     def WORLD(string)
+      @subroutines ||= {}
       THE_WORLD.create_from_string(string)
     end
 
@@ -30,6 +31,29 @@ module Karel
       karel = THE_WORLD.karel
       KAREL.remove_beeper_from_bag
       THE_WORLD.add_beeper(*karel)
+    end
+
+    def DEFINE(name,&block)
+      raise BadSubroutine unless subroutine_name_ok?(name)
+      @subroutines ||= {}
+      @subroutines[name.to_sym] = block;
+    end
+
+    def subroutine_name_ok?(name)
+      name =~ /^[A-Z][A-Z_0-9]*[A-Z]$/
+    end
+
+    # Handles calling subroutines defined
+    def method_missing(sym,*args)
+      if !args || args.size == 0
+        if @subroutines[sym]
+          @subroutines[sym].call
+        else
+          super.method_missing(sym,args)
+        end
+      else
+        super.method_missing(sym,args)
+      end
     end
 
     def ITERATE(num,&block)

@@ -164,12 +164,11 @@ END
       IF(on_beeper) {
         PICKBEEPER()
       }
-      puts "\n";puts THE_WORLD.to_s
     }
     assert_equal 2,KAREL.num_beepers
     assert_equal [0,7],THE_WORLD.karel
-    assert [0,3],!THE_WORLD.beeper?
-    assert [0,6],!THE_WORLD.beeper?
+    assert !THE_WORLD[0,3].beeper?
+    assert !THE_WORLD[0,6].beeper?
   end
 
   private
