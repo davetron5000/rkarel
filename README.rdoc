@@ -126,7 +126,6 @@ Here's an example program that has Karel grabbing both beepers and stopping on t
     MOVE()
     PICKBEEPER()
     TURNLEFT()
-    TURNLEFT() 
     # Karel is now facing south
     WHILE(front_clear) {
       MOVE()
@@ -171,7 +170,7 @@ We can reduce the line count and make it more readable with some subroutines:
     TURNLEFT()
     MOVE()
     PICKBEEPER()
-    TURNAROUND()
+    TURNLEFT()
     RUN()
     BACKUP()
     TURNLEFT()
