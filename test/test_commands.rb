@@ -20,5 +20,12 @@ END
     MOVE()
     MOVE()
     assert_equal [2,3],THE_WORLD.karel
+    TURNLEFT()
+    TURNLEFT()
+    TURNLEFT()
+    MOVE()
+    assert_raises Explosion do
+      MOVE()
+    end
   end
 end
