@@ -5,17 +5,40 @@ module Karel
     def WORLD(string)
       @subroutines ||= {}
       THE_WORLD.create_from_string(string)
+      unless @silent
+        puts "Initial State"
+        puts THE_WORLD.to_s
+      end
+    end
+    
+    def DEBUG
+      @debug = true
+      @silent = false
+    end
+
+    def SILENT
+      @silent = true
+      @debug = false
+    end
+
+    def debug_command(command)
+      if @debug
+        puts "#{KAREL.num_beepers} beepers> #{command}"
+        puts THE_WORLD.to_s
+      end
     end
 
     # Moves Karel forward one square
     def MOVE
       x,y = Karel.coordinates_after_move_from(KAREL.direction,*THE_WORLD.karel)
       THE_WORLD.karel=[x,y]
+      debug_command('MOVE')
     end
 
     # Turns karel to the left in place
     def TURNLEFT
       KAREL.turnleft
+      debug_command('TURNLEFT')
     end
 
     def PICKBEEPER
@@ -26,12 +49,14 @@ module Karel
       rescue NoBeeper => x
         raise Explosion
       end
+      debug_command('PICKBEEPER')
     end
 
     def PUTBEEPER
       karel = THE_WORLD.karel
       KAREL.remove_beeper_from_bag
       THE_WORLD.add_beeper(*karel)
+      debug_command('PUTBEEPER')
     end
 
     def DEFINE(name,&block)
@@ -48,6 +73,7 @@ module Karel
     def method_missing(sym,*args)
       if !args || args.size == 0
         if @subroutines[sym]
+          puts "CALLING #{sym}" if @debug
           @subroutines[sym].call
         else
           super.method_missing(sym,args)

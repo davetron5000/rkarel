@@ -2,6 +2,7 @@
 $: << File.expand_path(File.dirname(__FILE__) + '/../lib')
 require 'rubygems'
 require 'gli'
+require 'karel'
 
 include GLI
 
@@ -22,6 +23,16 @@ command :run do |c|
   c.switch [:g,:debug]
 
   c.action do |global_options,options,args|
+    raise "You must provide a karel source file" if args.empty?
+    include Karel
+    code = File.open(args[0]).readlines.join("")
+    DEBUG() if options[:g]
+    SILENT() if options[:s]
+    eval(code)
+    unless options[:s]
+      puts "Final State"
+      puts THE_WORLD.to_s
+    end
   end
 
 end
@@ -48,7 +59,15 @@ post do |global,command,options,args|
 end
 
 on_error do |exception|
-  true
+  case exception
+    when Karel::Explosion 
+      $stderr.puts "Karel Exploded"
+      $stderr.puts THE_WORLD.to_s
+      false
+    else
+      puts exception.backtrace
+      true
+  end
 end
 
 GLI.run(ARGV)

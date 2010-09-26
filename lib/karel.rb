@@ -10,5 +10,4 @@ module Karel
 
   THE_WORLD = World.new
   KAREL = Karel.new
-
 end
