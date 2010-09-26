@@ -1,10 +1,21 @@
 module Karel
+  # Create the world with the given initialization string
   def WORLD(string)
-    THE_WORLD.IS(string)
+    THE_WORLD.create_from_string(string)
   end
+
+  # The world in which Karel operates.  
   class World
+
     attr_reader :karel
-    def IS(definition)
+    attr_reader :width
+    attr_reader :height
+
+    # Creates the world from a string that is a multi-line representation of the world.
+    # This isn't the constructor because our DSL requires uppercase and we don't want
+    # warnings by creating the world twice (once when declaring it as a constant in the Karel
+    # module and once inside the module method WORLD).
+    def create_from_string(definition)
       @world = []
       @width = 0
       row = 0
@@ -16,23 +27,12 @@ module Karel
         row_data.split(//).each do |square|
           @karel = [row,column] if square == 'K'
           @world[row] ||= []
-          if square == 'B' || square == 'W'
-            if square == 'B'
-              @world[row][column] = Square.new(true)
-            elsif square == 'W'
-              @world[row][column] = Wall.new
-            else
-              raise "Square type #{square} is not handled"
-            end
-          else
-            @world[row][column] = Square.new
-          end
+          @world[row][column] = square_for(square)
           column += 1
         end
         column = 0
         row += 1
       end
-      @karel = [0,0]
       @height.times do |row|
         @world[row] = [] if @world[row].nil?
         @width.times do |column|
@@ -41,23 +41,23 @@ module Karel
       end
     end
 
-    def width
-      @width
-    end
-
-    def height
-      @height
-    end
-
+    # Set the location of Karel
+    #
+    # location - an array of size 2, with the row/column where karel should be
+    #
+    # Raises an Explosion if you try to put Karel where there is a wall
     def karel=(location)
       raise Explosion if self[*location].wall?
       @karel = location
     end
 
+    # Provides access to the square at the given row/column
     def [](row,column)
       @world[row][column]
     end
 
+    # Returns the string representation, which looks like the 
+    # the string used to construct this
     def to_s
       string = ""
       @height.times do |row|
@@ -73,7 +73,27 @@ module Karel
       end
       string
     end
+
+    private
+
+    # Given a character, returns the square type
+    # that should go there
+    def square_for(square)
+      if square == 'B' || square == 'W'
+        if square == 'B'
+          Square.new(true)
+        elsif square == 'W'
+          Wall.new
+        else
+          raise "Square type #{square} is not handled"
+        end
+      else
+        Square.new
+      end
+    end
   end
+
+  THE_WORLD = World.new
 
   class Explosion < Exception
   end
@@ -102,6 +122,4 @@ module Karel
     def beeper?; false; end
     def to_s; "W"; end
   end
-
-  THE_WORLD = World.new
 end
