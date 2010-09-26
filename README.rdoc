@@ -40,24 +40,22 @@ You can then call this subroutine as you would any other
 
 Once you've defined your subroutines, you can begin writing your program:
 
-    PROGRAM {
-      MOVE()
-      TURNLEFT()
-      ITERATE(3.TIMES) {
-        MOVE
-      }
-      IF(front_clear) {
-        MOVE()
-      }
-      ELSE {
-        PUTBEEPER()
-      }
-      TURNLEFT()
-      WHILE(not_on_beeper) {
-        MOVE
-      }
-      PICKBEEPER()
+    MOVE()
+    TURNLEFT()
+    ITERATE(3.TIMES) {
+      MOVE
     }
+    IF(front_clear) {
+      MOVE()
+    }
+    ELSE {
+      PUTBEEPER()
+    }
+    TURNLEFT()
+    WHILE(not_on_beeper) {
+      MOVE
+    }
+   PICKBEEPER()
 
 == Commands
 
@@ -92,10 +90,97 @@ Once you've defined your subroutines, you can begin writing your program:
 [+facing_west+] true if Karel is facing west
 [+not_facing_west+] true if Karel is not facing west
 
+== Subroutines
+
+You can define your own subroutines via the +DEFINE+ directive:
+
+    DEFINE('RUN_TO_WALL') {
+      WHILE(front_clear) {
+        MOVE()
+      }
+    }
+    RUN_TO_WALL()
+
+
 == Whitespace and comments
 
 Whitespace is not significant and is ignored.  Comments are lines starting with optional whitespace then followed by a +#+.  The remainder
 of the line is ignored.
+
+= Example
+
+Here's an example program that has Karel grabbing both beepers and stopping on the last one (the one in the upper-left corner):
+
+    WORLD <<END
+    B WW  B
+      W
+      W
+
+    WWW    K
+    END
+    
+    WHILE(front_clear) {
+      MOVE()
+    }
+    TURNLEFT()
+    MOVE()
+    PICKBEEPER()
+    TURNLEFT()
+    TURNLEFT() 
+    # Karel is now facing south
+    WHILE(front_clear) {
+      MOVE()
+    }
+    TURNLEFT()
+    TURNLEFT()
+    MOVE()
+    TURNLEFT()
+    WHILE(front_clear) {
+      MOVE()
+    }
+    TURNLEFT()
+    TURNLEFT()
+    TURNLEFT()
+    WHILE(not_on_beeper) {
+      MOVE()
+    }
+    PICKBEEPER()
+    
+We can reduce the line count and make it more readable with some subroutines:
+
+    DEFINE('TURNRIGHT') {
+      ITERATE(3.TIMES) {
+        TURNLEFT()
+      }
+    }
+    DEFINE('TURNAROUND') {
+      TURNLEFT()
+      TURNLEFT()
+    }
+    DEFINE('RUN') {
+      WHILE(front_clear) {
+        MOVE()
+      }
+    }
+    DEFINE('BACKUP') {
+      TURNAROUND()
+      MOVE()
+    }
+
+    RUN()
+    TURNLEFT()
+    MOVE()
+    PICKBEEPER()
+    TURNAROUND()
+    RUN()
+    BACKUP()
+    TURNLEFT()
+    RUN()
+    TURNRIGHT()
+    WHILE(not_on_beeper) {
+      MOVE()
+    }
+    PICKBEEPER()
 
 = Vim Syntax File 
 
