@@ -5,6 +5,6 @@ module Karel
   class InvalidWorld < Exception; end
   # Thrown when a square is occupied when an operation requires it not to be
   class SquareOccupied < Exception; end
-  # Throw when there is no beeper on a square when an operation require there to be
+  # Thrown when there is no beeper on a square when an operation require there to be
   class NoBeeper < Exception; end
 end
