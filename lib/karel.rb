@@ -110,6 +110,7 @@ module Karel
   class Explosion < Exception; end
   class InvalidWorld < Exception; end
   class NoKarel < Exception; end
+  class SquareOccupied < Exception; end
 
   class Square
     def initialize(beeper=false)
@@ -134,5 +135,6 @@ module Karel
     def wall?; true; end
     def beeper?; false; end
     def to_s; "W"; end
+    def put_beeper; raise SquareOccupied; end
   end
 end
