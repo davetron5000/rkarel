@@ -6,12 +6,11 @@ module Karel
     attr_reader :karel
     def IS(definition)
       @world = []
-      w = 0
-      h = 0
+      @width = 0
       x = 0
       y = 0
       definition.split(/\n/).each do |row|
-        w = row.length if row.length > w 
+        @width = row.length if row.length > @width
         row.split(//).each do |square|
           @karel = [x,y] if square == 'K'
           if square == 'B' || square == 'W'
@@ -27,12 +26,16 @@ module Karel
           y += 1
         end
         y = 0
-        h += 1 
         x += 1
       end
       @karel = [0,0]
-      @width = w
-      @height = h
+      @height = x
+      @width.times do |x|
+        @world[x] = [] if @world[x].nil?
+        @height.times do |y|
+          @world[x][y] = Square.new if @world[x][y].nil?
+        end
+      end
     end
 
     def width
@@ -49,13 +52,7 @@ module Karel
     end
 
     def [](x,y)
-      if @world[x].nil?
-        EMPTY_SQUARE
-      elsif @world[x][y].nil?
-        EMPTY_SQUARE
-      else
-        @world[x][y]
-      end
+      @world[x][y]
     end
 
     def to_s
@@ -79,7 +76,7 @@ module Karel
   end
 
   class Square
-    def initialize(beeper)
+    def initialize(beeper=false)
       @beeper = beeper
     end
 
@@ -102,8 +99,6 @@ module Karel
     def beeper?; false; end
     def to_s; "W"; end
   end
-
-  EMPTY_SQUARE = Square.new(false)
 
   THE_WORLD = World.new
 end
