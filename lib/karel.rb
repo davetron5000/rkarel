@@ -71,20 +71,18 @@ module Karel
 
     private
 
+    SQUARE_FACTORIES = {
+      'B' => lambda { Square.new(true) },
+      'W' => lambda { Wall.new },
+      ' ' => lambda { Square.new },
+      'K' => lambda { Square.new },
+    }
+
     # Given a character, returns the square type
     # that should go there
     def square_for(square)
-      if square == 'B' || square == 'W'
-        if square == 'B'
-          Square.new(true)
-        elsif square == 'W'
-          Wall.new
-        else
-          raise "Square type #{square} is not handled"
-        end
-      else
-        Square.new
-      end
+      raise InvalidWorld,"Square type #{square} is not valid" if SQUARE_FACTORIES[square].nil?
+      SQUARE_FACTORIES[square].call
     end
 
     def fill_in_empty_spaces
@@ -100,6 +98,9 @@ module Karel
   THE_WORLD = World.new
 
   class Explosion < Exception
+  end
+
+  class InvalidWorld < Exception
   end
 
   class Square

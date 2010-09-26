@@ -29,4 +29,14 @@ END
     end
   end
 
+  def test_valid_world_with_bad_character
+    assert_raises InvalidWorld do
+    WORLD <<END
+KWB 
+
+ BX
+END
+    end
+  end
+
 end
