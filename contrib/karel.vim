@@ -15,7 +15,7 @@ syn keyword karelConditionsPos facing_east facing_north facing_south facing_west
 syn keyword karelConditionsNeg not_facing_east not_facing_north not_facing_south not_facing_west not_on_beeper right_not_clear front_not_clear left_not_clear
 syn match karelComment  "#.*$"
 syn match karelSubName  "'[^']*'"
-syn match karelIterateSize "[0-9][0-9]*  *TIMES"
+syn match karelIterateSize "[0-9][0-9]*\.TIMES"
 "syn region karelWorld start="<<END" end="END"
 
 hi def link karelCommand Function

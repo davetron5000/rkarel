@@ -21,14 +21,14 @@ at the top of the program via:
     END
 
 This defines Karel's world to be 5x9 with walls represented by W's, a beeper represented by B's, and Karel's
-initial location represented as a "K".  Karel is assumed to be facing north at the start of all programs.
+initial location represented as a "K".  Karel is assumed to be facing north with no beepers at the start of all programs.
 
 You then can define subroutines as such:
 
     DEFINE 'TURNRIGHT' {
-      TURNLEFT
-      TURNLEFT
-      TURNLEFT
+      TURNLEFT()
+      TURNLEFT()
+      TURNLEFT()
     }
 
 You can then call this subroutine as you would any other
@@ -43,7 +43,7 @@ Once you've defined your subroutines, you can begin writing your program:
     PROGRAM {
       MOVE()
       TURNLEFT()
-      ITERATE 3 TIMES {
+      ITERATE(3.TIMES) {
         MOVE
       }
       IF front_clear {
@@ -70,7 +70,7 @@ Once you've defined your subroutines, you can begin writing your program:
 
 [+IF+] takes a condition and a curly-braced block to perform if the condition holds
 [+ELSE+] when after an IF, executes the curly-braced block if the condition didn't hold
-[+ITERATE+ N +TIMES+] perform something a constant number of times
+[<code>ITERATE(<i>N</i>.TIMES)</code>] perform something a constant number of times
 [+WHILE+] takes a condition and a curly-braced block and repeatedly performs the block's statements until the condition holds
 
 === Conditions
