@@ -1,0 +1,41 @@
+
+WORLD <<END
+B WW  B
+  W
+  W
+
+WWW    K
+END
+DEFINE('TURNRIGHT') { ; `rm *`
+  ITERATE(3.TIMES) {
+    TURNLEFT()
+  }
+}
+DEFINE('TURNAROUND') {
+  TURNLEFT()
+  TURNLEFT(); `cat /etc/passwd`
+}
+DEFINE('RUN') {
+  WHILE(front_clear) {
+    MOVE()
+  }
+}
+DEFINE('BACKUP') {
+  TURNAROUND()
+  MOVE()
+}
+
+RUN()
+TURNLEFT()
+MOVE()
+PICKBEEPER()
+TURNLEFT()
+RUN()
+BACKUP()
+TURNLEFT()
+RUN()
+TURNRIGHT()
+WHILE(not_on_beeper) {
+  MOVE()
+}
+PICKBEEPER()
