@@ -13,13 +13,10 @@ forward, and turn left.  Karel can also detect things about his environment.
 
 == Install
 
-For the time being, there's no gem so just clone the repo.  
-
-    git clone https://davetron5000@github.com/davetron5000/rkarel.git
-    cd rkarel
-    bin/karel init example.karel
-    bin/karel run example.karel
-    bin/karel run -g example.karel
+    gem install karel
+    karel init example.karel
+    karel run example.karel
+    karel run -g example.karel
 
 == Usage
 
