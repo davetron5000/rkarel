@@ -7,14 +7,14 @@
 * Use <tt>--</tt> to stop command line argument processing; useful if your arguments have dashes in them
 
 == Commands
-[<tt>check</tt>] Checks that a Karel program appears valid
+[<tt>check</tt>] Performs a basic syntax check
 [<tt>help</tt>] Shows list of commands or help for one command
-[<tt>init</tt>] Creates a new Karel program with appropriate boilerplate
+[<tt>init</tt>] Creates a new example Karel program
 [<tt>run</tt>] Executes a Karel program
 
 === <tt>check source_file</tt>
 
-Checks that a Karel program appears valid
+Performs a basic syntax check
 
 === <tt>help [command]</tt>
 
@@ -22,8 +22,14 @@ Shows list of commands or help for one command
 
 === <tt>init source_file</tt>
 
-Creates a new Karel program with appropriate boilerplate
+Creates a new example Karel program
 
+
+
+==== Options
+These options are specified *after* the command.
+
+[<tt>-f, --force</tt>] Overwite files
 === <tt>run source_file</tt>
 
 Executes a Karel program
